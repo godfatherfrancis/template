@@ -16,5 +16,29 @@ public class Game {
         playerOne.chooseName();
         playerOne.chooseWeapon();
         playerOne.chooseLocation();
+        playerOne.findItem("shield");
+        playerOne.findItem("boots");
+        playerOne.findItem("belt");
+    }
+
+    public static String nextLine() {
+        String nextLine = scanner.nextLine();
+        while (nextLine.startsWith("/")) {
+            switch (nextLine) {
+                case "inv":
+                    for (String item : playerOne.items) {
+                        System.out.println(item);
+                    }
+                    break;
+                case "exit":
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Command not found!");
+                    break;
+            }
+            nextLine = scanner.nextLine();
+        }
+        return nextLine;
     }
 }

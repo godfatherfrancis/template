@@ -1,5 +1,7 @@
 package main.java.com.highresfelix.textadventure;
 
+import java.util.ArrayList;
+
 /**
  * created by @highresfelix on 8/26/19
  */
@@ -8,6 +10,12 @@ public class Player {
     String name;
     String weapon;
     String location;
+    ArrayList<String> items = new ArrayList<>();
+
+    // constructor
+    public Player() {
+
+    }
 
     public void chooseName() {
         System.out.println("What is your name?");
@@ -40,6 +48,16 @@ public class Player {
             System.out.println("Entering tunnel...");
         } else {
             throw new Exception("An a oop! Invalid location.");
+        }
+    }
+
+    public void findItem(String item) {
+        System.out.println("New item found! Would you like to pick it up [y/n]");
+        String response = Game.scanner.nextLine();
+
+        if (response.equalsIgnoreCase("y")) {
+            items.add(item);
+            System.out.println("You picked up an item");
         }
     }
 }
