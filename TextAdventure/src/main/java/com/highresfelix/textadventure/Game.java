@@ -25,12 +25,12 @@ public class Game {
         String nextLine = scanner.nextLine();
         while (nextLine.startsWith("/")) {
             switch (nextLine) {
-                case "inv":
+                case "/inv":
                     for (String item : playerOne.items) {
                         System.out.println(item);
                     }
                     break;
-                case "exit":
+                case "/exit":
                     System.exit(0);
                     break;
                 default:
