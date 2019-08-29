@@ -10,47 +10,51 @@ import java.util.Scanner;
  */
 
 public class ToDo {
+    public static ArrayList<ToDoItem> items = new ArrayList<>();
+    public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String args[]) {
-
-        ArrayList<ToDoItem> items = new ArrayList<>();
-//        HashMap<String, Boolean> toDoList = new HashMap<String, Boolean>();
-        Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println("1. Create to-do item" +
                     "\n2. Toggle to-do item" +
                     "\n3. List to-do items");
 
-            String response = scanner.nextLine();
+            int response = Integer.parseInt(scanner.nextLine());
 
-            if (response.equals("1")) {
-                System.out.println("Enter your to-do item:");
-                String text = scanner.nextLine();
-
-                ToDoItem item = new ToDoItem(text, false);
-                items.add(item);
-
-            } else if (response.equals("2")) {
-                System.out.println("Enter the number of the item(s) you want to toggle:");
-                int itemNum = Integer.valueOf(scanner.nextLine());
-                ToDoItem item = items.get(itemNum-1);
-                item.isDone = !item.isDone;
-
-            } else if (response.equals("3")) {
-                int i = 1;
-                for (ToDoItem item : items) {
-                    String checkbox = "[ ] ";
-                    if (item.isDone) {
-                        checkbox = "[x] ";
-                    }
-                    System.out.println(checkbox + i + ". " + item.text);
-                    i++;
-                }
-
-            } else {
-                System.out.println("Invalid option");
+            switch (response) {
+                case 1: createItem();
+                case 2: toggleItem();
+                case 3: listItems();
+                default: System.out.println("Invalid option");
             }
+        }
+    }
+
+    private static void createItem() {
+        System.out.println("Enter your to-do item:");
+        String text = scanner.nextLine();
+
+        ToDoItem item = new ToDoItem(text, false);
+        items.add(item);
+    }
+
+    private static void toggleItem() {
+        System.out.println("Enter the number of the item(s) you want to toggle:");
+        int itemNum = Integer.valueOf(scanner.nextLine());
+        ToDoItem item = items.get(itemNum-1);
+        item.isDone = !item.isDone;
+    }
+
+    private static void listItems() {
+        int i = 1;
+        for (ToDoItem item : items) {
+            String checkbox = "[ ] ";
+            if (item.isDone) {
+                checkbox = "[x] ";
+            }
+            System.out.println(checkbox + i + ". " + item.text);
+            i++;
         }
     }
 }
