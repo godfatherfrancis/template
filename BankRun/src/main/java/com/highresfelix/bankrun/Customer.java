@@ -53,11 +53,19 @@ public class Customer {
 
         switch (response) {
             case 1: getBalance();
+                    break;
             case 2: withdraw();
+                    break;
             case 3: deposit();
+                    break;
             case 4: removeCustomerAccount();
+                    break;
             case 5: userLogout();
+                    break;
             case 6: exit();
+                    break;
+            default: System.out.println("Invalid option");
+                    break;
         }
     }
 

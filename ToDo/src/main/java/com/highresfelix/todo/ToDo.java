@@ -24,9 +24,13 @@ public class ToDo {
 
             switch (response) {
                 case 1: createItem();
+                        break;
                 case 2: toggleItem();
+                        break;
                 case 3: listItems();
+                        break;
                 default: System.out.println("Invalid option");
+                        break;
             }
         }
     }
