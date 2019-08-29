@@ -1,20 +1,41 @@
 package main.java.com.highresfelix.bankrun;
 
-import java.util.Scanner;
+import java.util.HashMap;
 
 /**
  * created by @highresfelix on 8/26/19
  */
 
 public class Bank {
-    public static Scanner scanner = new Scanner(System.in);
-    public static Customer customer = new Customer();
+    HashMap<String, Double> accounts = new HashMap<>();
 
-    public static void main(String[] args) throws Exception {
-        System.out.println("Welcome to Cash Money Inc.");
-        customer.chooseName();
-        customer.accountAccess();
+    public Bank() {
 
     }
 
+    public Bank(String customer) {
+        accounts.put(customer, 10000.0);
+    }
+
+    public void addAccount(String customer) {
+        accounts.put(customer, 0.0);
+    }
+
+    public void removeAccount(String customer) {
+        accounts.remove(customer);
+    }
+
+    public boolean verifyCustomer(String customer) {
+        if (accounts.containsKey(customer)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getCustomerBalance(String customer) {
+
+        //
+        return accounts.get(customer);
+    }
 }
