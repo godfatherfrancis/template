@@ -69,26 +69,6 @@ public class Player extends Character {
         }
     }
 
-    public static void saveGame(Player player) throws IOException {
-        JsonSerializer serializer = new JsonSerializer();
-        String json = serializer.include("*").serialize(player);
-
-        File file = new File("game.json");
-        FileWriter fileWriter = new FileWriter(file);
-        fileWriter.write(json);
-        fileWriter.close();
-    }
-
-    public static Player loadGame() throws FileNotFoundException {
-        File file = new File("game.json");
-        Scanner scanner = new Scanner(file);
-        scanner.useDelimiter("\\Z");
-        String contents = scanner.next();
-
-        JsonParser parser = new JsonParser();
-        return parser.parse(contents, Player.class);
-    }
-
     public String getWeapon() {
         return weapon;
     }

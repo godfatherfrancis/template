@@ -1,11 +1,13 @@
 package main.java.com.highresfelix.textadventure;
 
-import java.io.IOException;
-import java.util.EmptyStackException;
-import java.util.Scanner;
+import jodd.json.JsonParser;
+import jodd.json.JsonSerializer;
 
-import static main.java.com.highresfelix.textadventure.Player.loadGame;
-import static main.java.com.highresfelix.textadventure.Player.saveGame;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * created by @highresfelix on 8/26/19
@@ -50,7 +52,7 @@ public class Game {
                     break;
                 case "/save":
                     try {
-                        saveGame(playerOne);
+                        saveGame();
                         System.out.println("Saved game.");
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -66,5 +68,25 @@ public class Game {
             nextLine = scanner.nextLine();
         }
         return nextLine;
+    }
+
+    public static void saveGame() throws IOException {
+        JsonSerializer serializer = new JsonSerializer();
+        String json = serializer.include("*").serialize(playerOne);
+
+        File file = new File("game.json");
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(json);
+        fileWriter.close();
+    }
+
+    public static Player loadGame() throws FileNotFoundException {
+        File file = new File("game.json");
+        Scanner scanner = new Scanner(file);
+        scanner.useDelimiter("\\Z");
+        String contents = scanner.next();
+
+        JsonParser parser = new JsonParser();
+        return parser.parse(contents, Player.class);
     }
 }
