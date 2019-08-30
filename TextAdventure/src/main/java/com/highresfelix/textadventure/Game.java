@@ -39,6 +39,8 @@ public class Game {
 
         Enemy egor = new Enemy("Egor", 10, 10);
         playerOne.battle(egor);
+
+        nextLine();
     }
 
     public static String nextLine() {

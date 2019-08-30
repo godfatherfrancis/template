@@ -1,14 +1,6 @@
 package main.java.com.highresfelix.textadventure;
 
-import jodd.json.JsonParser;
-import jodd.json.JsonSerializer;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * created by @highresfelix on 8/26/19
@@ -29,7 +21,7 @@ public class Player extends Character {
         System.out.println("What is your name?");
 
         name = Game.nextLine();
-        System.out.printf("Welcome, %s", name);
+        System.out.printf("Welcome, %s\n", name);
     }
 
     public void chooseWeapon() throws Exception {
