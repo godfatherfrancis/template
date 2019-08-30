@@ -1,6 +1,14 @@
 package main.java.com.highresfelix.textadventure;
 
+import jodd.json.JsonParser;
+import jodd.json.JsonSerializer;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * created by @highresfelix on 8/26/19
@@ -59,5 +67,49 @@ public class Player extends Character {
             items.add(item);
             System.out.println("You picked up an item");
         }
+    }
+
+    public static void saveGame() throws IOException {
+        JsonSerializer serializer = new JsonSerializer();
+        String json = serializer.include("*").serialize(player);
+
+        File file = new File("game.json");
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(json);
+        fileWriter.close();
+    }
+
+    public static Player loadGame() throws FileNotFoundException {
+        File file = new File("game.json");
+        Scanner scanner = new Scanner(file);
+        scanner.useDelimiter("\\Z");
+        String contents = scanner.next();
+
+        JsonParser parser = new JsonParser();
+        return parser.parse(contents, Player.class);
+    }
+
+    public String getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(String weapon) {
+        this.weapon = weapon;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public ArrayList<String> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<String> items) {
+        this.items = items;
     }
 }
