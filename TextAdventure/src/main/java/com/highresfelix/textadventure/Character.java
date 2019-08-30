@@ -15,8 +15,8 @@ public class Character {
         while (health > 0 && enemy.health > 0) {
             health -= enemy.damage;
             enemy.health -= damage;
-            System.out.printf("%s's health: $d\n", name, health);
-            System.out.printf("%s's health: $d\n", enemy.name, enemy.health);
+            System.out.printf("%s's health: %d\n", name, health);
+            System.out.printf("%s's health: %d\n", enemy.name, enemy.health);
         }
 
         String message = "%s has died.\n";
@@ -26,7 +26,7 @@ public class Character {
         }
 
         if (enemy.health <= 0) {
-            System.out.printf(message, name);
+            System.out.printf(message, enemy.name);
         }
     }
 }
