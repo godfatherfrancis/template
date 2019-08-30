@@ -69,7 +69,7 @@ public class Player extends Character {
         }
     }
 
-    public static void saveGame() throws IOException {
+    public static void saveGame(Player player) throws IOException {
         JsonSerializer serializer = new JsonSerializer();
         String json = serializer.include("*").serialize(player);
 

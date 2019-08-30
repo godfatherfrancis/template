@@ -50,7 +50,7 @@ public class Game {
                     break;
                 case "/save":
                     try {
-                        saveGame();
+                        saveGame(playerOne);
                         System.out.println("Saved game.");
                     } catch (IOException e) {
                         e.printStackTrace();
