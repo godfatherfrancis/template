@@ -6,22 +6,22 @@ import java.util.ArrayList;
  * created by @highresfelix on 8/26/19
  */
 
-public class Player {
-    String name;
+public class Player extends Character {
     String weapon;
     String location;
     ArrayList<String> items = new ArrayList<>();
 
     // constructor
     public Player() {
-
+        this.health = 20;
+        this.damage = 20;
     }
 
     public void chooseName() {
         System.out.println("What is your name?");
 
         name = Game.nextLine();
-        System.out.println("Welcome, " + name);
+        System.out.printf("Welcome, %s", name);
     }
 
     public void chooseWeapon() throws Exception {
@@ -29,9 +29,9 @@ public class Player {
         weapon = Game.nextLine();
 
         if (weapon.equalsIgnoreCase("sword")) {
-            System.out.println("A sword is a nice choice!");
+            System.out.printf("A %s is a nice choice!", weapon);
         } else if (weapon.equalsIgnoreCase("mace")) {
-            System.out.println("A mace if a fine choice");
+            System.out.printf("A %s is a fine choice!", weapon);
         } else {
             throw new Exception("An a oop! Invalid weapon.");
         }

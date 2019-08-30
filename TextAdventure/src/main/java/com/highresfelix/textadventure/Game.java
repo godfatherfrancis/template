@@ -1,5 +1,6 @@
 package main.java.com.highresfelix.textadventure;
 
+import java.util.EmptyStackException;
 import java.util.Scanner;
 
 /**
@@ -19,6 +20,9 @@ public class Game {
         playerOne.findItem("shield");
         playerOne.findItem("boots");
         playerOne.findItem("belt");
+
+        Enemy egor = new Enemy("Egor", 10, 10);
+        playerOne.battle(egor);
     }
 
     public static String nextLine() {
