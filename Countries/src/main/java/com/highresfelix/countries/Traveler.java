@@ -19,12 +19,28 @@ public class Traveler {
     static Scanner scanner;
 
     public static void main(String[] args) throws Exception {
+        System.out.println("Welcome Traveler.");
         loadFile();
         userInput();
     }
 
     static void userInput() {
-        
+        System.out.println("Type the first letter of a country for a list of countries whose names start with that letter.");
+
+        scanner = new Scanner(System.in);
+        String response = scanner.nextLine().toLowerCase();
+
+        if (!countryMap.containsKey(response)) {
+            System.out.println("Invalid Response");
+            userInput();
+        } else {
+            try {
+                System.out.printf("saving countries starting with the letter %s...", response);
+                saveFile(response);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     static void loadFile() throws FileNotFoundException {
@@ -64,10 +80,13 @@ public class Traveler {
         }
     }
 
-    static void saveFile(String userKey, ArrayList<Country> arrayList) throws IOException {
+    static void saveFile(String userKey) throws IOException {
         File file = new File(userKey + "_countries.txt");
         FileWriter fileWriter = new FileWriter(file);
-        fileWriter.write(arrayList.toString());
+
+        for (Country country : countryMap.get(userKey)) {
+            fileWriter.write(country.toString() + "\n");
+        }
         fileWriter.close();
     }
 }
