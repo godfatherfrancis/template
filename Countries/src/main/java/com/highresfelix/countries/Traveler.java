@@ -47,7 +47,10 @@ public class Traveler {
         File file = new File("countries.txt");
 
         scanner = new Scanner(file);
+        parseFile(scanner);
+    }
 
+    static void parseFile(Scanner scanner) {
         ArrayList<Country> tempList = new ArrayList<>();
 
         // read & parse file to temp ArrayList

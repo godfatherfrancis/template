@@ -1,8 +1,5 @@
 package main.java.com.highresfelix.countries;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 /**
  * created by @highresfelix on 8/30/19
  */
