@@ -1,5 +1,7 @@
 package main.java.com.highresfelix.countries;
 
+import jodd.json.JsonSerializer;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -36,7 +38,7 @@ public class Traveler {
         } else {
             try {
                 System.out.printf("saving countries starting with the letter %s...", response);
-                saveFile(response);
+                saveTxtFile(response);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -84,13 +86,26 @@ public class Traveler {
         }
     }
 
-    static void saveFile(String userKey) throws IOException {
+    static void saveTxtFile(String userKey) throws IOException {
         File file = new File(userKey + "_countries.txt");
         FileWriter fileWriter = new FileWriter(file);
 
         for (Country country : countryMap.get(userKey)) {
             fileWriter.write(country.toString() + "\n");
         }
+        fileWriter.close();
+    }
+
+    static void saveJsonFile(String userKey) throws IOException {
+        File file = new File(userKey + "_countries.json");
+        FileWriter fileWriter = new FileWriter(file);
+        JsonSerializer serializer = new JsonSerializer();
+
+        ArrayList<Country> countryList = new ArrayList<>();
+        countryList.addAll(countryMap.get(userKey));
+        
+        String json = serializer.serialize(countryList);
+        fileWriter.write(json);
         fileWriter.close();
     }
 }
