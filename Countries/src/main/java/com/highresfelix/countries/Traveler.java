@@ -14,8 +14,8 @@ import java.util.Scanner;
 
 public class Traveler {
     static Country country;
-    static HashMap<String, ArrayList<Country>> countryMap = new HashMap<>();
-    static ArrayList<Country> countriesList = new ArrayList<>();
+    public static HashMap<String, ArrayList<Country>> countryMap = new HashMap<>();
+    public static ArrayList<Country> countriesList = new ArrayList<>();
     static Scanner scanner;
 
     public static void main(String[] args) throws Exception {
@@ -50,7 +50,7 @@ public class Traveler {
         parseFile(scanner);
     }
 
-    static void parseFile(Scanner scanner) {
+    public static void parseFile(Scanner scanner) {
         ArrayList<Country> tempList = new ArrayList<>();
 
         // read & parse file to temp ArrayList
@@ -64,7 +64,8 @@ public class Traveler {
         }
 
         int keys = 0;
-        // iterate through temp ArrayList; add keys
+        // loop over temp ArrayList, create key & group countries to new ArrayList;
+        // the ones matching the key id add to HashMap
         while (keys < tempList.size()) {
             Country temptCountry = tempList.get(keys);
             String cKey = temptCountry.getName().substring(0, 1); // countryKey: A
