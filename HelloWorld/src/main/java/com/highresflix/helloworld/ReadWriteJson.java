@@ -16,8 +16,8 @@ import java.util.Scanner;
 public class ReadWriteJson {
     public static void main(String[] args) throws IOException {
         Person person = new Person();
-        person.name = "Alice Smith";
-        person.age = 30;
+        person.setName("Alice Smith");
+        person.setAge(30);
 
         File file = new File("person.json");
 
