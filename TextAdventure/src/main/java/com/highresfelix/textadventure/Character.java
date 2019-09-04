@@ -5,9 +5,9 @@ package main.java.com.highresfelix.textadventure;
  */
 
 public class Character {
-    String name;
-    int health;
-    int damage;
+    public String name;
+    public int health;
+    public int damage;
 
     public void battle(Character enemy) {
         System.out.printf("%s appears!\n", enemy.name);
