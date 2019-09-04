@@ -1,8 +1,15 @@
 package main.java.com.highresfelix.person;
 
+import com.google.gson.Gson;
+import jodd.json.JsonArray;
+import jodd.json.JsonObject;
+import jodd.json.JsonSerializer;
+import jodd.json.impl.JsonObjectSerializer;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,8 +23,9 @@ public class PersonMapper {
     static HashMap<String, ArrayList<Person>> personMap = new HashMap<>();
     static ArrayList<Person> people = new ArrayList<>();
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         readFile();
+        writeToJson();
         System.out.println(personMap);
     }
 
@@ -55,8 +63,17 @@ public class PersonMapper {
         }
     }
 
-    private static void writeToJson() {
+    private static void writeToJson() throws IOException {
         File file = new File("people.json");
 
+        /*JsonSerializer serializer = new JsonSerializer();
+        String json = serializer.serialize(hashMap);*/ // HashMap -> json is empty
+
+        Gson gson = new Gson();
+        String json = gson.toJson(personMap);
+
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(json);
+        fileWriter.close();
     }
 }
