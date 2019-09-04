@@ -1,3 +1,4 @@
+### Java ###
 # Compiled class file
 *.class
 
@@ -32,3 +33,7 @@
 hs_err_pid*
 
 .DS_Store
+
+### Java-Web ###
+# ignoring target file
+target/
