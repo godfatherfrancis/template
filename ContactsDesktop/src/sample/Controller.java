@@ -1,6 +1,7 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,13 +10,17 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import jodd.json.JsonSerializer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class Controller implements Initializable {
     ObservableList<Contact> contacts = FXCollections.observableArrayList();
@@ -57,10 +62,8 @@ public class Controller implements Initializable {
     }
 
     public void saveContacts() throws IOException {
+        System.out.println(contacts);
         File file = new File("contacts.json");
-
-        /*JsonSerializer serializer = new JsonSerializer();
-        String json = serializer.serialize(contacts);*/ // json is empty
 
         Gson gson = new Gson();
         String json = gson.toJson(contacts);
@@ -71,8 +74,23 @@ public class Controller implements Initializable {
         System.out.println("saveContacts");
     }
 
-    public void loadContacts() {
+    public ObservableList<Contact> loadContacts() throws FileNotFoundException {
+        File file = new File("contacts.json");
+        Scanner scanner = new Scanner(file);
 
+        Gson gson = new Gson();
+
+        Type userListType = new TypeToken<ArrayList<Contact>>(){}.getType();
+
+        ArrayList<Contact> contactArray = gson.fromJson(scanner.nextLine(), userListType);
+        ObservableList<Contact> contactsList = FXCollections.observableArrayList();
+
+        for (Contact contact : contactArray) {
+            contactsList.add(contact);
+            System.out.println(contact);
+        }
+
+        return contactsList;
     }
 
     public void onKeyPressed(KeyEvent event) throws IOException {
@@ -83,6 +101,12 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            contacts = loadContacts();
+            System.out.println("Contacts loaded successfully");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         listView.setItems(contacts);
     }
 }
