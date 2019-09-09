@@ -1,11 +1,14 @@
 package main.java.info.highresfelix.microblog;
 
+import com.google.gson.Gson;
 import spark.ModelAndView;
 import spark.Session;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -56,6 +59,7 @@ public class Main {
                     }
 
                     response.redirect("/");
+                    writeToJson(user);
                     return "";
                 })
         );
@@ -76,6 +80,7 @@ public class Main {
                     user.messages.add(message);
 
                     response.redirect("/");
+                    writeToJson(user);
                     return "";
                 })
         );
@@ -99,6 +104,7 @@ public class Main {
                     }
 
                     response.redirect("/");
+                    writeToJson(user);
                     return "";
                 })
         );
@@ -120,6 +126,7 @@ public class Main {
                     }
 
                     response.redirect("/");
+                    writeToJson(user);
                     return "";
                 })
         );
@@ -134,5 +141,16 @@ public class Main {
                     return "";
                 })
         );
+    }
+
+    private static void writeToJson(User user) throws IOException {
+        File file = new File(user.name + ".json");
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(json);
+        fileWriter.close();
     }
 }
