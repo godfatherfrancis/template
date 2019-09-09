@@ -39,15 +39,21 @@ public class Main {
         Spark.post(
                 "/create-user",
                 ((request, response) -> {
+                    Session session = request.session();
+
                     String name = request.queryParams("userName");
+                    String password = request.queryParams("userPassword");
                     User user = users.get(name);
                     if (user == null) {
-                        user = new User(name);
+                        user = new User(name, password);
                         users.put(name, user);
+                        session.attribute("userName", name);
+                    } else if (!user.password.equals(password)) {
+                        System.out.println("INVALID PASSWORD");
+                        session.invalidate();
+                    } else {
+                        session.attribute("userName", name);
                     }
-
-                    Session session = request.session();
-                    session.attribute("userName", name);
 
                     response.redirect("/");
                     return "";
