@@ -81,6 +81,30 @@ public class Main {
         );
 
         Spark.post(
+                "/edit-message",
+                ((request, response) -> {
+                    Session session = request.session();
+                    String name = session.attribute("userName");
+                    User user = users.get(name);
+                    if (user == null) {
+                        throw new Exception("User is not logged in");
+                    }
+
+                    int messageId = Integer.parseInt(request.queryParams("messageId")) - 1;
+                    Message message = user.messages.get(messageId);
+                    System.out.println("MESSAGE: " + message);
+
+                    if (user.messages.contains(message)) {
+                        String editMessage = request.queryParams("editMessage");
+                        message.message = editMessage;
+                    }
+
+                    response.redirect("/");
+                    return "";
+                })
+        );
+
+        Spark.post(
                 "/delete-message",
                 ((request, response) -> {
                     Session session = request.session();
