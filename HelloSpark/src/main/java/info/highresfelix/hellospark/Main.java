@@ -1,6 +1,7 @@
 package main.java.info.highresfelix.hellospark;
 
 import spark.ModelAndView;
+import spark.Session;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
 
@@ -11,7 +12,7 @@ import java.util.HashMap;
  */
 
 public class Main {
-    static User user;
+    static HashMap<String, User> users = new HashMap<>();
 
     // http://localhost:4567
     public static void main(String[] args) {
@@ -21,6 +22,11 @@ public class Main {
                 "/",
                 ((request, response) -> {
                     HashMap hashMap = new HashMap();
+
+                    Session session = request.session();
+                    String userName = session.attribute("userName");
+                    User user = users.get(userName);
+
                     if (user == null) {
                         return new ModelAndView(hashMap, "login.html");
                     } else {
@@ -35,7 +41,26 @@ public class Main {
                 "/login",
                 ((request, response) -> {
                     String name = request.queryParams("loginName");
-                    user = new User(name);
+                    User user = users.get(name);
+                    if (user == null) {
+                        user = new User(name);
+                        users.put(name, user);
+                    }
+
+                    Session session = request.session();
+                    session.attribute("userName", name);
+
+                    response.redirect("/");
+                    return "";
+                })
+        );
+
+        Spark.post(
+                "/logout",
+                ((request, response) -> {
+                    Session session = request.session();
+                    session.invalidate();
+
                     response.redirect("/");
                     return "";
                 })
