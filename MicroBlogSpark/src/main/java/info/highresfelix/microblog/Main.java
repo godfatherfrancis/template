@@ -13,11 +13,7 @@ import java.util.HashMap;
  */
 
 public class Main {
-//    static User user;
     static HashMap<String, User> users = new HashMap<>();
-    static Message message;
-    static HashMap messageMap;
-    static ArrayList<Message> messages;
 
     public static void main(String[] args) {
         Spark.init(); // http://localhost:4567
@@ -32,12 +28,9 @@ public class Main {
                     User user = users.get(userName);
 
                     if (user == null) {
-                        System.out.println("user null");
                         return new ModelAndView(hashMap, "index.html");
                     } else {
-                        System.out.println(user.name + " messages.html");
-                        hashMap.put("name", user.name);
-                        return new ModelAndView(hashMap, "messages.html");
+                        return new ModelAndView(user, "messages.html");
                     }
                 }),
                 new MustacheTemplateEngine()
@@ -61,15 +54,21 @@ public class Main {
                 })
         );
 
-        // TODO create, save & display message
         Spark.post(
                 "/create-message",
                 ((request, response) -> {
+                    Session session = request.session();
+                    String name = session.attribute("userName");
+                    User user = users.get(name);
+                    if (user == null) {
+                        throw new Exception("User is not logged in");
+                    }
+
                     String userMessage = request.queryParams("message");
-                    System.out.println(userMessage);
-                    message = new Message(userMessage);
-                    messages.add(message);
-                    messageMap.put("message", messages);
+                    Message message = new Message(userMessage);
+
+                    user.messages.add(message);
+
                     response.redirect("/");
                     return "";
                 })
