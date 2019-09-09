@@ -120,6 +120,8 @@ public class Main {
                 })
         );
 
+        // TODO Make each item have items own delete button next to it, so you can simply click the appropriate button
+        //  rather than type in a number.
         Spark.post(
                 "/delete-message",
                 ((request, response) -> {
