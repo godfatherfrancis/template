@@ -81,6 +81,27 @@ public class Main {
         );
 
         Spark.post(
+                "/delete-message",
+                ((request, response) -> {
+                    Session session = request.session();
+                    String name = session.attribute("userName");
+                    User user = users.get(name);
+                    if (user == null) {
+                        throw new Exception("User is not logged in");
+                    }
+
+                    if (!user.messages.isEmpty()) {
+                        int messageId = Integer.parseInt(request.queryParams("messageId")) - 1;
+                        Message message = user.messages.get(messageId);
+                        user.messages.remove(message);
+                    }
+
+                    response.redirect("/");
+                    return "";
+                })
+        );
+
+        Spark.post(
                 "/logout",
                 ((request, response) -> {
                     Session session = request.session();
