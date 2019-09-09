@@ -1,6 +1,7 @@
 package main.java.info.highresfelix.microblog;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import spark.ModelAndView;
 import spark.Session;
 import spark.Spark;
@@ -9,7 +10,9 @@ import spark.template.mustache.MustacheTemplateEngine;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * created by @highresfelix on 9/9/19
@@ -19,6 +22,14 @@ public class Main {
     static HashMap<String, User> users = new HashMap<>();
 
     public static void main(String[] args) {
+        if (users.isEmpty()) {
+            try {
+                readFromJson();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         Spark.init(); // http://localhost:4567
 
         Spark.get(
@@ -144,7 +155,7 @@ public class Main {
     }
 
     private static void writeToJson(User user) throws IOException {
-        File file = new File(user.name + ".json");
+        File file = new File("users.json");
 
         Gson gson = new Gson();
         String json = gson.toJson(user);
@@ -152,5 +163,16 @@ public class Main {
         FileWriter fileWriter = new FileWriter(file);
         fileWriter.write(json);
         fileWriter.close();
+    }
+
+    private static void readFromJson() throws IOException {
+        File file = new File("users.json");
+        Scanner scanner = new Scanner(file);
+
+        Gson gson = new Gson();
+
+        Type userListType = new TypeToken<User>(){}.getType();
+        User jsonUser = gson.fromJson(scanner.nextLine(), userListType);
+        users.put(jsonUser.name, jsonUser);
     }
 }
