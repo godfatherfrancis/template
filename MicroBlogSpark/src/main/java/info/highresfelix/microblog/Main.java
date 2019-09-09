@@ -92,7 +92,6 @@ public class Main {
 
                     int messageId = Integer.parseInt(request.queryParams("messageId")) - 1;
                     Message message = user.messages.get(messageId);
-                    System.out.println("MESSAGE: " + message);
 
                     if (user.messages.contains(message)) {
                         String editMessage = request.queryParams("editMessage");
