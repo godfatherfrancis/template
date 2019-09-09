@@ -13,6 +13,7 @@ import java.util.HashMap;
 public class Main {
     static User user;
 
+    // http://localhost:4567
     public static void main(String[] args) {
         Spark.init();
 
