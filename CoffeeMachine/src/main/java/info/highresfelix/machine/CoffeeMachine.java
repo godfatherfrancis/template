@@ -7,81 +7,57 @@ import java.util.Scanner;
  */
 
 public class CoffeeMachine {
-    static int waterSupply;
-    static int almondMilkSupply;
-    static int coffeeBeansSupply;
-    static int cupsOfCoffee;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        
         System.out.print("Write how many ml of water the coffee machine has:");
-        waterSupply = scanner.nextInt();
+        int water = scanner.nextInt();
+
         System.out.print("Write how many ml of almond milk the coffee machine has:");
-        almondMilkSupply = scanner.nextInt();
+        int milk = scanner.nextInt();
+
         System.out.print("Write how many grams of coffee beans the coffee machine has:");
-        coffeeBeansSupply = scanner.nextInt();
+        int coffeeBeans = scanner.nextInt();
+
         System.out.print("Write how many cups of coffee you will need:");
         int cupsOfCoffee = scanner.nextInt();
-        coffeeRequest(cupsOfCoffee);
+
+        coffeeRequest(water, milk, coffeeBeans, cupsOfCoffee);
 //        makeCoffee();
     }
 
-    private static void coffeeRequest(int cupsOfCoffee) {
+    private static void coffeeRequest(int water, int milk, int coffeeBeans, int cupsOfCoffee) {
+        // calculate the amount of ingredients the machine needs depending on how much coffee requested
         // recipe for one cup of coffee
-        int water = 200;
-        int almondMilk = 50;
-        int coffeeBeans = 15;
-        // calculate request
-        int waterNeeded = water * cupsOfCoffee;
-        int almondMilkNeeded = almondMilk * cupsOfCoffee;
-        int beansNeeded = coffeeBeans * cupsOfCoffee;
+        /*int waterRecipe = 200;
+        int milkRecipe = 50;
+        int coffeeBeansRecipe = 15;
+
+        int waterNeeded = waterRecipe * cupsOfCoffee;
+        int almondMilkNeeded = milkRecipe * cupsOfCoffee;
+        int beansNeeded = coffeeBeansRecipe * cupsOfCoffee;
+
         System.out.println(String.format("For %d cups of coffee you will need:\n" +
                 "%d ml of water\n%d ml of almond milk\n%d g of coffee beans",
-                cupsOfCoffee, waterNeeded, almondMilkNeeded, beansNeeded));
+                cupsOfCoffee, waterNeeded, almondMilkNeeded, beansNeeded));*/
 
-        int waterResult = waterSupply % water;
-        int recipeWater = waterSupply - waterResult;
-        int almondMilkResult = almondMilkSupply % almondMilk;
-        int recipeAlmondMilk = almondMilkSupply - almondMilkResult;
-        int coffeeBeansResult = coffeeBeansSupply % coffeeBeans;
-        int recipeCoffeeBeans = coffeeBeansSupply - coffeeBeansResult;
 
-        int waterUsed = 0;
-        int almondMilkUsed = 0;
-        int coffeeBeansUsed = 0;
-        int makeCupsOfCoffee = 0;
-        int additionalCups = 0;
-        for (int i = 0; i < cupsOfCoffee; i++) {
-            if (waterUsed < recipeWater && almondMilkUsed < recipeAlmondMilk && coffeeBeansUsed < recipeCoffeeBeans) {
-                waterUsed += water;
-                almondMilkUsed += almondMilk;
-                coffeeBeansUsed += coffeeBeans;
-                makeCupsOfCoffee++;
-            }
-        }
+        // estimate how many coffees the machine can make based on the amount of ingredients entered
+        water /= 200; // % or /= returns remainder
+        milk /= 50;
+        coffeeBeans /= 15;
 
-        // check if additional cups of coffee can be made with remaining supplies
-        // TODO make valid iteration
-        for (int i = 0; i < 10000; i++) {
-            if (waterUsed < recipeWater && almondMilkUsed < recipeAlmondMilk && coffeeBeansUsed < recipeCoffeeBeans) {
-                waterUsed += water;
-                almondMilkUsed += almondMilk;
-                coffeeBeansUsed += coffeeBeans;
-                additionalCups++;
-            }
-        }
+        // find lowest remaining value
+        int min = Math.min(water, milk);
+        min = Math.min(coffeeBeans, min);
 
-        System.out.println(String.format("\nRecipe can make %d cups of coffee:\n%d ml of water\n%d ml of almond milk\n%d g of coffee beans",
-                makeCupsOfCoffee, recipeWater, recipeAlmondMilk, recipeCoffeeBeans));
-
-        if (waterSupply >= waterNeeded && almondMilkSupply >= almondMilkNeeded && coffeeBeansSupply >= beansNeeded) {
-            if (additionalCups > 0) {
-                System.out.println(String.format("Yes, I can make that amount of coffee (and even %d more than that)", additionalCups));
-            } else {
-                System.out.println("Yes, I can make that amount of coffee");
-            }
+        if (cupsOfCoffee == min) {
+            System.out.println("Yes, I can make that amount of coffee");
+        } else if (cupsOfCoffee < min) {
+            System.out.println("Yes, I can make that amount of coffee (and even " + (min - cupsOfCoffee) + " more than that)");
         } else {
-            System.out.println(String.format("No, I can make only %d cup(s) of coffee", makeCupsOfCoffee));
+            System.out.println("No, I can make only " + min + " cup(s) of coffee");
         }
     }
 
