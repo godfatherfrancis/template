@@ -46,16 +46,6 @@ public class Main {
                     hashMap.put("messages", threads);
                     hashMap.put("userName", userName);
                     return new ModelAndView(hashMap, "home.html");
-
-                    /*Session session = request.session();
-                    String userName = session.attribute("userName");
-                    User user = users.get(userName);
-
-                    if (user == null) {
-                        return new ModelAndView(hashMap, "index.html");
-                    } else {
-                        return new ModelAndView(user, "messages.html");
-                    }*/
                 }),
                 new MustacheTemplateEngine()
         );
@@ -91,53 +81,6 @@ public class Main {
                     return "";
                 })
         );
-
-        /*Spark.post(
-                "/create-user",
-                ((request, response) -> {
-                    Session session = request.session();
-
-                    String name = request.queryParams("userName");
-                    String password = request.queryParams("userPassword");
-                    User user = users.get(name);
-                    if (user == null) {
-                        user = new User(name, password);
-                        users.put(name, user);
-                        session.attribute("userName", name);
-                    } else if (!user.password.equals(password)) {
-                        System.out.println("INVALID PASSWORD");
-                        session.invalidate();
-                    } else {
-                        session.attribute("userName", name);
-                    }
-
-                    response.redirect("/");
-//                    writeToJson(user);
-                    return "";
-                })
-        );*/
-
-        /*Spark.post(
-                "/create-message",
-                ((request, response) -> {
-                    Session session = request.session();
-                    String name = session.attribute("userName");
-                    User user = users.get(name);
-                    if (user == null) {
-                        throw new Exception("User is not logged in");
-                    }
-
-                    String userMessage = request.queryParams("message");
-                    Message message = new Message(userMessage);
-
-                    user.messages.add(message);
-
-                    response.redirect("/");
-//                    writeToJson(user);
-                    return "";
-                })
-        );*/
-
     }
 
     private static void addTestUsers() {
