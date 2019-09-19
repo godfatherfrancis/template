@@ -31,13 +31,6 @@ public class Main {
                 "/",
                 ((request, response) -> {
 
-                    // display all data of single person selected
-                    String personId = request.queryParams("person");
-                    if (personId != null) {
-                        personIdNum = Integer.parseInt(personId);
-                        response.redirect("/person");
-                    }
-
                     HashMap hashMap = new HashMap();
                     ArrayList<Person> list = new ArrayList<>();
 
@@ -66,6 +59,13 @@ public class Main {
         Spark.get(
                 "/person",
                 ((request, response) -> {
+
+                    // display all data of single person selected
+                    String personId = request.queryParams("person");
+                    if (personId != null) {
+                        personIdNum = Integer.parseInt(personId);
+                        response.redirect("/person");
+                    }
 
                     HashMap hashMap = new HashMap();
                     ArrayList<Person> list = new ArrayList<>();
