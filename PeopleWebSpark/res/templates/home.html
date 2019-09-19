@@ -2,8 +2,16 @@
 <body>
 
 {{#people}}
-<a href="/?person={{id}}">{{first_name}} {{last_name}}</a><br>
+    <a href="/?person={{id}}">{{first_name}} {{last_name}}</a><br>
 {{/people}}
+
+{{#pageIndex}}
+    <a href="/previous" class="previous">Previous</a>
+    <a href="/next" class="next">Next</a>
+{{/pageIndex}}
+{{^pageIndex}}
+    <a href="/next" class="next" id="direction">Next</a>
+{{/pageIndex}}
 
 </body>
 </html>

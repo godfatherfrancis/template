@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * created by @highresfelix on 9/18/19
@@ -16,6 +17,10 @@ import java.util.Scanner;
 
 public class Main {
     static ArrayList<Person> people = new ArrayList<>();
+    static int pageIndex = 0;
+    static int previousDisplayIndex = 0;
+    static int nextDisplayIndex = 20;
+    static int personIdNum = 0;
 
     public static void main(String[] args) throws FileNotFoundException {
         readFile();
@@ -26,26 +31,38 @@ public class Main {
                 "/",
                 ((request, response) -> {
 
+                    // display all data of single person selected
+                    String personId = request.queryParams("person");
+                    if (personId != null) {
+                        personIdNum = Integer.parseInt(personId);
+                        response.redirect("/person");
+                    }
+
                     HashMap hashMap = new HashMap();
                     ArrayList<Person> list = new ArrayList<>();
 
-                    for (Person person : people) {
-                        list.add(person);
+                    for (int i = previousDisplayIndex; i < nextDisplayIndex && i < people.size(); i++) {
+                        list.add(people.get(i));
                     }
 
-                    // TODO limit view to 20
-                    // when server issue resolved, resume assignments 4.3-paging
-                    /*for (int i = 0; i <= 20; i++) {
-                        list.add(people.get(i));
-                    }*/
-
                     hashMap.put("people", list);
+
+                    // TODO: jump to curtain page through url injection
+                    // TODO: fix button display when last page reached
+                    Set<String> pageDirection = request.attributes();
+                    for (String att : pageDirection) {
+                        System.out.println(att);
+                    }
+                    if (pageIndex == 0 || pageIndex == 49) {
+                        hashMap.put("pageIndex", null);
+                    } else if (pageIndex < 50) {
+                        hashMap.put("pageIndex", pageIndex);
+                    }
                     return new ModelAndView(hashMap, "home.html");
                 }),
                 new MustacheTemplateEngine()
         );
 
-        // TODO display all the data about a single person
         Spark.get(
                 "/person",
                 ((request, response) -> {
@@ -53,11 +70,43 @@ public class Main {
                     HashMap hashMap = new HashMap();
                     ArrayList<Person> list = new ArrayList<>();
 
+                    for (Person person : people) {
+                        if (person.getId() == personIdNum) {
+                            list.add(person);
+                            System.out.println(person);
+                        }
+                    }
 
-                    hashMap.put("people", list);
-                    return new ModelAndView(hashMap, "home.html");
+                    hashMap.put("personDetail", list);
+                    return new ModelAndView(hashMap, "person.html");
                 }),
                 new MustacheTemplateEngine()
+        );
+
+        Spark.get(
+                "/previous",
+                ((request, response) -> {
+
+                    pageIndex -= 1;
+                    previousDisplayIndex -= 20;
+                    nextDisplayIndex -= 20;
+
+                    response.redirect("/");
+                    return "";
+                })
+        );
+
+        Spark.get(
+                "/next",
+                ((request, response) -> {
+
+                    pageIndex += 1;
+                    previousDisplayIndex += 20;
+                    nextDisplayIndex += 20;
+
+                    response.redirect("/");
+                    return "";
+                })
         );
     }
 
