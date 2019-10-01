@@ -45,9 +45,35 @@ public class Main {
 
                     hashMap.put("messages", threads);
                     hashMap.put("userName", userName);
+                    hashMap.put("replyId", replyIdNum);
                     return new ModelAndView(hashMap, "home.html");
                 }),
                 new MustacheTemplateEngine()
+        );
+
+        // TODO make a post
+        Spark.post(
+                "/create-message",
+                ((request, response) -> {
+                    Session session = request.session();
+                    String userName = session.attribute("userName");
+                    if (userName == null) {
+                        throw new Exception("User not logged in.");
+                    }
+
+                    String text = request.queryParams("messageText");
+                    String replyId = request.queryParams("replyId");
+                    if (text == null || replyId == null) {
+                        throw new Exception("Didn't get necessary query parameters.");
+                    }
+                    int replyIdNum = Integer.parseInt(replyId);
+
+                    Message message = new Message(messages.size(), replyIdNum, userName, text);
+                    messages.add(message);
+
+                    response.redirect(request.headers("Referer")); // redirect to the referrer URL
+                    return "";
+                })
         );
 
         Spark.post(
@@ -67,7 +93,7 @@ public class Main {
                     Session session = request.session();
                     session.attribute("userName", userName);
 
-                    response.redirect("/");
+                    response.redirect("/"); // redirect to top lvl
                     return "";
                 })
         );
